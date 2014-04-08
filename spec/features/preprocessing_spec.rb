@@ -25,7 +25,7 @@ describe 'PreProcessing script' do
   context 'invalid use' do
     context 'no arguments' do
       let(:args){ {} }
-      it{ should include "Usage: rake"}
+      it{ should include "[ERROR]"}
     end
     context 'missing arguments' do
       let(:args) do
@@ -33,7 +33,7 @@ describe 'PreProcessing script' do
           'OUTPUT_DIR' => "'#{output_dir}'"
         }
       end
-      it{ should include "Usage: rake"}
+      it{ should include "[ERROR]"}
     end
   end
 

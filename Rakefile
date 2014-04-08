@@ -7,7 +7,7 @@ task :default => :spec
 
 namespace :aps do
   desc "Starts the PreProcessing script"
-  task :process do 
+  task :process do
 
     input_dir = (input_dir = ENV['INPUT_DIR']) && Pathname.new(input_dir)
     output_dir = (output_dir = ENV['OUTPUT_DIR']) && Pathname.new(output_dir)
@@ -21,7 +21,6 @@ namespace :aps do
     rescue => e
       msg = []
       msg << "[ERROR]: #{e.message}"
-      msg << 'Usage: rake aps:process INPUT_DIR=/path/to/input_dir OUTPUT_DIR=/path/to/output'
       $stderr.puts msg
       exit 1
     end
