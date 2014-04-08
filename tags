@@ -1,0 +1,53 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ApsLogger	lib/aps_logger.rb	/^class ApsLogger$/;"	c
+BatchList	lib/batch_list.rb	/^class BatchList$/;"	c
+ColorSheet	lib/color_sheet.rb	/^class ColorSheet$/;"	c
+CsvExporter	lib/csv_exporter.rb	/^class CsvExporter$/;"	c
+ImageImport	lib/image_import.rb	/^class ImageImport$/;"	c
+Luminaire	lib/luminaire.rb	/^class Luminaire$/;"	c
+SummaryExporter	lib/summary_exporter.rb	/^class SummaryExporter$/;"	c
+View3D	lib/view3d.rb	/^class View3D$/;"	c
+XlsImporter	lib/xls_importer.rb	/^class XlsImporter$/;"	c
+colSHEETextract	old_scripts/colSHEETextract.m	/^function colorVAR = colSHEETextract(filename)$/;"	f
+create_luminaires	lib/xls_importer.rb	/^  def self.create_luminaires rows$/;"	F	class:XlsImporter
+delete_duplicates	lib/xls_importer.rb	/^  def self.delete_duplicates luminaires$/;"	F	class:XlsImporter
+download_all	lib/image_import.rb	/^  def self.download_all luminaires, output_dir$/;"	F
+download_reference_images	lib/image_import.rb	/^  def self.download_reference_images ctn, reference_images, output_dir$/;"	F	class:ImageImport
+enrich_luminaires	lib/batch_list.rb	/^  def self.enrich_luminaires zip_file, luminaires, output_dir$/;"	F	class:BatchList
+export	lib/summary_exporter.rb	/^  def self.export luminaire, output_dir$/;"	F	class:SummaryExporter
+export_all	lib/csv_exporter.rb	/^  def self.export_all luminaires, output_path$/;"	F	class:CsvExporter
+export_all	lib/summary_exporter.rb	/^  def self.export_all luminaires, output_dir$/;"	F	class:SummaryExporter
+fam_name	lib/luminaire.rb	/^  def fam_name$/;"	f	class:Luminaire
+filename	lib/color_sheet.rb	/^  def self.filename(fam_name)$/;"	F	class:ColorSheet
+filename	lib/view3d.rb	/^  def self.filename(fam_name)$/;"	F	class:View3D
+generate_image_url	lib/image_import.rb	/^  def self.generate_image_url ctn, type, width=true$/;"	F	class:ImageImport
+get_reference_url	lib/image_import.rb	/^  def self.get_reference_url url$/;"	F	class:ImageImport
+get_value	lib/color_sheet.rb	/^  def get_value value$/;"	f	class:ColorSheet
+has_reference_images?	lib/luminaire.rb	/^  def has_reference_images?$/;"	f	class:Luminaire
+header	lib/color_sheet.rb	/^  def self.header(content)$/;"	F	class:ColorSheet
+import	lib/xls_importer.rb	/^  def self.import input_file$/;"	F	class:XlsImporter
+import_rows	lib/xls_importer.rb	/^  def self.import_rows input_file$/;"	F	class:XlsImporter
+initialize	lib/aps_logger.rb	/^  def initialize log_file$/;"	f	class:ApsLogger
+initialize	lib/batch_list.rb	/^  def initialize input_dir, output_dir$/;"	f	class:BatchList
+initialize	lib/color_sheet.rb	/^  def initialize inputfile$/;"	f	class:ColorSheet
+initialize	lib/view3d.rb	/^  def initialize inputfile$/;"	f	class:View3D
+is_a_colorsheet	lib/color_sheet.rb	/^  def self.is_a_colorsheet? filename$/;"	F	class:ColorSheet
+is_a_view3d	lib/view3d.rb	/^  def self.is_a_view3d?(filename)$/;"	F	class:View3D
+is_complete?	lib/luminaire.rb	/^  def is_complete?$/;"	f	class:Luminaire
+log	lib/aps_logger.rb	/^  def self.log level, message$/;"	F	class:ApsLogger
+materials	lib/luminaire.rb	/^  def materials$/;"	f	class:Luminaire
+merge_data3	old_scripts/merge_data3.m	/^function merge_data3(articleList)$/;"	f
+move_to_targetdir	lib/batch_list.rb	/^  def self.move_to_targetdir luminaires, input_dir, output_dir$/;"	F	class:BatchList
+normalize	lib/xls_importer.rb	/^  def self.normalize value$/;"	F	class:XlsImporter
+process	lib/batch_list.rb	/^  def process$/;"	f	class:BatchList
+reference_images	lib/image_import.rb	/^  def self.reference_images ctn$/;"	F	class:ImageImport
+retrieve_used_materials	lib/color_sheet.rb	/^  def retrieve_used_materials spreadsheet$/;"	f	class:ColorSheet
+strip_heredoc	lib/summary_exporter.rb	/^  def self.strip_heredoc(string)$/;"	F	class:SummaryExporter
+summary	lib/summary_exporter.rb	/^  def self.summary luminaire$/;"	F	class:SummaryExporter
+to_luminaires_hash	lib/batch_list.rb	/^  def self.to_luminaires_hash luminaires$/;"	F	class:BatchList
+to_row	lib/csv_exporter.rb	/^  def self.to_row luminaire$/;"	F	class:CsvExporter

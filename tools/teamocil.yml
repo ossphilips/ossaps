@@ -1,0 +1,27 @@
+session:
+  name: "Ossyor Act"
+  windows:
+    - name: "Daemons"
+      root: <%= ENV['OSSACT_ROOT'] %>
+      splits:
+        - cmd: "rails s"
+        - cmd: "bundle exec rake konacha:serve"
+          width: 50
+    - name: "Editing"
+      root: <%= ENV['OSSACT_ROOT'] %>
+      splits:
+        - cmd: "vim"
+    - name: "Test"
+      root: <%= ENV['OSSACT_ROOT'] %>
+      splits:
+        - cmd: 'bundle exec guard'
+        - cmd: 'bundle exec rake cucumber:wip'
+          width: 50
+    - name: "Console"
+      root: <%= ENV['OSSACT_ROOT'] %>
+      splits:
+        - cmd: "git fetch"
+    - name: 'Documentation'
+      root: <%= ENV['OSSYOR_ROOT'] %>/../ossdocs
+      splits:
+        - cmd: 'vim .'

@@ -1,0 +1,17 @@
+-----* 162548716 *-----
+Description: 
+Main Color: 87
+Main Color Description: 
+Main Material: 
+Main Material Description: 
+Used materials: 
+Number of light sources: 
+Bulb description: 
+Colour Temperature: 
+Lumen per light source: 
+Luminous flux per light source: 
+Beam Angle: 
+Radiation Pattern: 
+Room: 
+
+

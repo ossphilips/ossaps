@@ -1,0 +1,17 @@
+-----* 162548716 *-----
+Description: Dunetop lantern post LED grey 1x7.5W SEL
+Main Color: 87
+Main Color Description: Grey 1
+Main Material: AL
+Main Material Description: Aluminium
+Used materials: 60, 262, 262
+Number of light sources: 1
+Bulb description: MODULE 3 Led's White 2700 K
+Colour Temperature: 2700 K
+Lumen per light source: 325
+Luminous flux per light source: 271
+Beam Angle: 60
+Radiation Pattern: lambertian pattern
+Room: Garden & Patio
+
+
