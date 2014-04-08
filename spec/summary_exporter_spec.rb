@@ -119,7 +119,7 @@ describe SummaryExporter do
       let(:reference_file){ 'luminaire_summary_missing_colorsheet.txt' }
       let(:materials) { [] }
       it "should log a warning" do
-        ApsLogger = double()
+        stub_const("ApsLogger", double())
         ApsLogger.should_receive(:log).twice
         subject
       end
@@ -130,7 +130,7 @@ describe SummaryExporter do
       let(:luminaire){ FactoryGirl.build(:luminaire, ctn: ctn) }
       let(:reference_file){ 'luminaire_summary_empty_luminaire.txt' }
       it "should log a warning" do
-        ApsLogger = double()
+        stub_const("ApsLogger", double())
         ApsLogger.should_receive(:log).twice
         subject
       end
