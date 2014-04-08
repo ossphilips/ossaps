@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd $OSSACT_FOLDER/scripts/aps
+cd $OSSAPS_FOLDER
 bundle install
 bundle exec rake aps:process INPUT_DIR=$1 OUTPUT_DIR=$2
 
