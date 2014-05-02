@@ -31,7 +31,7 @@ class ColorSheet
   end
 
   def self.is_a_colorsheet? filename
-    filename.downcase.end_with? ".xls"
+    filename[/(.xlsx|.xls)\z/i]
   end
 
   private

@@ -66,6 +66,11 @@ describe ColorSheet do
                                          '5' => ['6', '7', '8'] }
       }
     end
+    context 'xlsx colorsheet' do
+      let(:colorsheet) { 'spec/fixtures/colorsheet.xlsx' }
+      its(:used_materials) { should == { '31' => ['A309', '60', 'K309'],
+                                         '87' => ['F263', '60', 'K263'], '' => [] } }
+    end
   end
 
   describe '.used_materials_by_color' do
@@ -89,8 +94,14 @@ describe ColorSheet do
   describe '#is_a_colorsheet?' do
     subject { described_class.is_a_colorsheet?(entry) }
     context 'is a colorsheet' do
-      let(:entry) { 'DOCUMENTS/162548716-915004122901/915004122901-DEVELOPMNT-COLORSHEET.CD112416.XLS'}
-      it { should be_true }
+      context 'xls' do
+        let(:entry) { 'DOCUMENTS/162548716-915004122901/915004122901-DEVELOPMNT-COLORSHEET.CD112416.XLS'}
+        it { should be_true }
+      end
+      context 'xlsx' do
+        let(:entry) { 'DOCUMENTS/162548716-915004122901/915004122901-DEVELOPMNT-COLORSHEET.CD112416.XLSX'}
+        it { should be_true }
+      end
     end
     context 'is not a colorsheet' do
       let(:entry) { 'invalid' }
