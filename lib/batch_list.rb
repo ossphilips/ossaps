@@ -41,21 +41,22 @@ class BatchList
           fam = Luminaire.ctn2fam_name(ctn)
           lum = luminaires_hash[ctn]
           ApsLogger.log :warn, "No entry in Excel file for #{name} (ctn #{ctn})"  unless lum
+          path = Pathname.new(name)
           if ColorSheet.is_a_colorsheet?(name)
-            file = output_dir + ColorSheet.filename(fam)
+            file = output_dir + ColorSheet.filename(fam, path.extname())
             extract(entry, file)
             colorsheets[fam] ||= ColorSheet.new
             colorsheets[fam].import(file)
             ApsLogger.log :info, "Colorsheet added for family #{fam}"
           elsif View3D.is_a_view3d?(name)
             if !view3ds[fam]
-              file = output_dir + View3D.filename(fam)
+              file = output_dir + View3D.filename(fam, path.extname())
               extract(entry, file)
               view3ds[fam] = file.extend View3D
               ApsLogger.log :info, "View3D added for family #{fam}"
             end
           elsif name.downcase.include? ".jpg"
-            file = output_dir + fam + ctn  + Pathname.new(name).basename
+            file = output_dir + fam + ctn  + path.basename
             extract(entry, file)
             if lum
               lum.reference_images.push type: :ref, file: file

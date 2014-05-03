@@ -110,7 +110,7 @@ describe ColorSheet do
   end
 
   describe '#filename' do
-    subject{ described_class.filename('16254') }
-    it{ should eql Pathname.new('16254').join('16254-COLORSHEET.XLS')}
+    subject{ described_class.filename('16254', '.ext') }
+    it{ should eql Pathname.new('16254').join('16254-COLORSHEET.EXT')}
   end
 end

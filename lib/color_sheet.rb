@@ -20,8 +20,8 @@ class ColorSheet
     self
   end
 
-  def self.filename(family)
-    Pathname.new(family).join("#{family}-COLORSHEET.XLS")
+  def self.filename(family, ext)
+    Pathname.new(family).join("#{family}-COLORSHEET#{ext.upcase}")
   end
 
   def used_materials_by_color color
