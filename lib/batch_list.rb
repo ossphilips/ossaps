@@ -98,7 +98,7 @@ class BatchList
 
         FileUtils.cp_r luminaire_dir, ctn_target, preserve: true
 
-        js_and_xls_files = Dir.glob(File.join(input_dir, luminaire.fam_name, "*.{jt,JT,xls,XLS}"))
+        js_and_xls_files = Dir.glob(File.join(input_dir, luminaire.fam_name, "*"))
         FileUtils.cp_r js_and_xls_files, target, preserve: true
       else
         ApsLogger.log :warn, "Luminaire #{luminaire_dir} is missing" unless File.exists?(luminaire_dir)

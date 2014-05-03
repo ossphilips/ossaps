@@ -11,6 +11,7 @@ describe BatchList do
   let(:output_root) { RSpec.configuration.output_root }
   let(:output_dir) { output_root.join('output') }
   let(:fixtures){ Pathname.new('spec/fixtures') }
+  let(:incomplete_dir){ output_dir.join('incomplete') }
   let(:complete_dir){ output_dir.join('complete') }
   let(:working_dir){ output_dir.join('working') }
   let(:input_dir){ fixtures.join('input_dir') }
@@ -139,45 +140,34 @@ describe BatchList do
       FactoryGirl.build(:luminaire, ctn: '162548716'),
       FactoryGirl.build(:luminaire, ctn: '163219316')
     ] }
+    let(:files) { ['foo.XlSx', 'bar.jt'] }
     subject{ described_class.move_to_targetdir lums, working_dir, output_dir}
     before do
-      [true, false].each_with_index do |b, i|
-        lums[i].stub(:is_complete?).and_return(b)
+      lums[0].stub(:is_complete?).and_return(true)
+      lums[1].stub(:is_complete?).and_return(false)
+      lums.each do |lum|
+        fam_dir = working_dir.join(lum.fam_name)
+        fam_dir.join(lum.ctn).mkpath
+        FileUtils.touch files.map {|f| fam_dir.join(f) }
       end
     end
-    context 'valid input and output dir' do
-      before do
-        lums.each do |lum|
-          output_dir.join('working', lum.fam_name, lum.ctn).mkpath
-        end
-      end
 
-      it 'creates family directories' do
-        subject
-        output_dir.join('complete', '16254').should exist
-        output_dir.join('incomplete', '16321').should exist
+    it 'copies all family files for all luminaires and preserves modification time' do
+      mtimes = {}
+      lums.each do |lum|
+        files.each {|f| mtimes[[lum, f]] = working_dir.join(lum.fam_name, f).mtime }
       end
+      subject
+      lums.each do |lum|
+        dir = output_dir.join(lum.is_complete? ? 'complete' : 'incomplete', lum.fam_name)
+        dir.should exist
+        files.each {|f| dir.join(f).mtime.should eq mtimes[[lum, f]]}
+      end
+    end
 
-      it 'moves colorsheet files to complete folder and preserves modification time' do
-        files = ['16254-colorsheet_lower.xls', '16254-COLORSHEET.XLS']
-        FileUtils.touch files.map {|f| working_dir.join('16254', f) }
-        mtimes = files.map { |f| working_dir.join('16254', f).mtime }
-        subject
-        files.each_with_index {|f, i| complete_dir.join('16254', f).mtime.should eq mtimes[i] }
-      end
-
-      it 'moves view3d files to complete folder and preserves modification time' do
-        files = ['16254-view3d_lower.xls', '16254-VIEW3D.JT']
-        FileUtils.touch files.map {|f| working_dir.join('16254', f) }
-        mtimes = files.map { |f| working_dir.join('16254', f).mtime }
-        subject
-        files.each_with_index {|f, i| complete_dir.join('16254', f).mtime.should eq mtimes[i] }
-      end
-
-      it 'handles existing complete folder' do
-        output_dir.join("complete").mkpath
-        expect { subject }.not_to raise_error
-      end
+    it 'handles existing complete folder' do
+      output_dir.join("complete").mkpath
+      expect { subject }.not_to raise_error
     end
   end
 
