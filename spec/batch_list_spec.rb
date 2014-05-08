@@ -161,17 +161,23 @@ describe BatchList do
       FactoryGirl.build(:luminaire, ctn: '016520616')
     }
     let(:expected_colorsheet) { [ luminaires_dir.join('16254', '16254-COLORSHEET.XLS'), nil, nil] }
-    let(:expected_colorsheet_mtime) { [ Time.new(2011,10,14,6,42,32,'+02:00'), nil, nil] }
+    let(:expected_colorsheet_mtime) { [Time.new(2011,10,14,6,42,32,'+02:00'), nil, nil] }
     let(:expected_3dview) { [luminaires_dir.join('16254', '16254-3DVIEW.JT'), luminaires_dir.join('16321','16321-3DVIEW.JT'), nil] }
-    let(:expected_3dview_mtime) { [ Time.new(2012,07,26,15,48,32,'+02:00'), Time.new(2011,06,27,14,40,14,'+02:00'), nil] }
+    let(:expected_3dview_mtime) { [Time.new(2012,07,26,15,48,32,'+02:00'), Time.new(2011,06,27,14,40,14,'+02:00'), nil] }
     let(:expected_reference_images) { [
-      ['ref1.jpg', 'ref2.jpg'].map { |img| luminaires_dir.join('16254','162548716', img) },
-      ['ref1.jpg', 'ref2.jpg'].map { |img| luminaires_dir.join('16321','163219316', img) },
+      ['ref.jpg', 'ref.JPG', 'ref.bmp', 'ref.tif', 'ref.gif'].map { |img| luminaires_dir.join('16254','162548716', img) },
+      nil,
       nil
     ] }
     let(:expected_reference_images_mtime) { [
-      [ Time.new(2014,02,10,10,53,00,'+01:00'), Time.new(2014,02,10,11,00,39,'+01:00')],
-      [ Time.new(2014,02,10,10,53,00,'+01:00'), Time.new(2014,02,10,11,00,39,'+01:00')],
+      [
+        Time.new(2014,5,8,14,33,49,"+02:00"),
+        Time.new(2014,5,8,14,33,49,"+02:00"),
+        Time.new(2014,5,8,14,33,41,"+02:00"),
+        Time.new(2014,2,10,10,53,00,"+01:00"),
+        Time.new(2014,5,8,14,33,49,"+02:00"),
+      ],
+      nil,
       nil
     ] }
 

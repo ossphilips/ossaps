@@ -55,7 +55,7 @@ class BatchList
               view3ds[fam] = file.extend View3D
               ApsLogger.log :info, "View3D added for family #{fam}"
             end
-          elsif name.downcase.include? ".jpg"
+          elsif name[/(.jpg|.tif|.bmp|.gif)\z/i]
             file = output_dir + fam + ctn  + path.basename
             extract(entry, file)
             if lum
