@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'PreProcessing script' do
-  subject { rake_task }
+  subject { puts "rake"; rake_task }
 
   let(:rake_task) { `rake aps:process #{args_string} 2>&1` }
   let(:input_dir){ Pathname.new('spec/fixtures/input_dir') }
-  let(:output_dir){ Pathname.new('tmp/test/output') }
+  let(:output_dir) { Pathname.new('tmp/features/output') }
   let(:args_string) { args.map { |k, v| "#{k}=#{v}" }.join(' ') }
   let(:luminaires_dir) { output_dir.join('luminaires') }
   let(:available_colorsheet_families){ ['16254'] }
@@ -31,22 +31,28 @@ describe 'PreProcessing script' do
   end
 
   context 'invalid input' do
+    let(:input_dir) { 'invalid_dir' }
     before do
       subject
     end
-    let(:input_dir) { 'invalid_dir' }
     it 'generates an error log file' do
       output_dir.join('error_log.txt').exist?.should be_true
     end
   end
 
   context 'valid use' do
-    before do
-      subject
-    end
-
     # We combine all the checks because triggering the rake task
     # for each small test takes too much time
+    # not allowed to use subject of let in before and after blocks
+    before(:all) do
+      @output_dir = Pathname.new('tmp/features/output')
+      @result = `rake aps:process INPUT_DIR='spec/fixtures/input_dir' OUTPUT_DIR="#{@output_dir}"`
+    end
+
+    after(:all) do
+      @output_dir.rmtree
+    end
+
     it 'creates a luminaires directory' do
       output_dir.children.select{|entry| entry.directory?}.count.should eql 1
       luminaires_dir.exist?.should be_true
