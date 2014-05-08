@@ -89,11 +89,11 @@ describe 'PreProcessing script' do
     end
 
     it 'copies reference images in the input to the output folder for that luminaire' do
-      ['162548716', '163219316' ].each do |ctn|
-        dir = luminaires_dir.join(ctn[0,5], ctn)
-        ['ref1.jpg', 'ref2.JPG'].each do |img|
-          dir.join(img).size?.should equal 9
-        end
+      ctn = '162548716'
+      family = ctn[0,5]
+      dir = luminaires_dir.join(family, ctn)
+      ['jpg', 'JPG', 'bmp', 'gif', 'tif'].each do |ext|
+        dir.join("ref.#{ext}").size?.should equal 9
       end
     end
 
