@@ -79,41 +79,12 @@ class BatchList
     end
   end
 
-  def self.move_to_targetdir luminaires, input_dir, output_dir
-    raise "Output directory: #{output_dir} is missing" unless File.exists?(output_dir)
-    complete_dir = output_dir.join("complete")
-    incomplete_dir = output_dir.join("incomplete")
-
-    complete_dir.mkpath
-    incomplete_dir.mkpath
-
-    luminaires.each do |luminaire|
-      luminaire_dir = input_dir.join(luminaire.fam_name, luminaire.ctn)
-
-      if luminaire_dir.exist?
-        dir = luminaire.is_complete? ? complete_dir : incomplete_dir
-        target = dir.join(luminaire.fam_name)
-
-        ctn_target = target.join(luminaire.ctn)
-        target.mkpath
-
-        FileUtils.cp_r luminaire_dir, ctn_target, preserve: true
-
-        js_and_xls_files = Dir.glob(File.join(input_dir, luminaire.fam_name, "*"))
-        FileUtils.cp_r js_and_xls_files, target, preserve: true
-      else
-        ApsLogger.log :warn, "Luminaire #{luminaire_dir} is missing" unless File.exists?(luminaire_dir)
-      end
-    end
-    FileUtils.remove_dir input_dir, true
-  end
-
   def process
     luminaires = Luminaires.new.import_from_excel(@excel_file).remove_duplicates
-    self.class.enrich_luminaires @zip_file, luminaires, @output_dir.join('working')
-    self.class.download_reference_images luminaires, @output_dir.join('working')
-    self.class.move_to_targetdir luminaires, @output_dir.join('working'), @output_dir
-    SummaryExporter.export_all luminaires, @output_dir
+    luminaires_dir = @output_dir.join('luminaires')
+    self.class.enrich_luminaires @zip_file, luminaires, luminaires_dir
+    self.class.download_reference_images luminaires, luminaires_dir
+    SummaryExporter.export_all luminaires, luminaires_dir
     CsvExporter.export_all luminaires, @output_dir.join("luminaires.csv")
   end
 

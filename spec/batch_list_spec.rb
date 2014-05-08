@@ -11,9 +11,7 @@ describe BatchList do
   let(:output_root) { RSpec.configuration.output_root }
   let(:output_dir) { output_root.join('output') }
   let(:fixtures){ Pathname.new('spec/fixtures') }
-  let(:incomplete_dir){ output_dir.join('incomplete') }
-  let(:complete_dir){ output_dir.join('complete') }
-  let(:working_dir){ output_dir.join('working') }
+  let(:luminaires_dir){ output_dir.join('luminaires') }
   let(:input_dir){ fixtures.join('input_dir') }
   let(:batch_list) { described_class.new input_dir, output_dir}
   let(:zip_file) { fixtures.join('input_dir', 'hld_batch_small_XX.zip') }
@@ -92,6 +90,7 @@ describe BatchList do
     let(:test_file) { "16254-COLORSHEET.XLS" }
     subject{ batch_list.process }
 
+    #TODO fix test to check exception
     context 'Exception raised' do
       let(:file_name) { test_file }
       before do
@@ -106,11 +105,11 @@ describe BatchList do
       before do
         subject
       end
-      it 'should check if test file is present' do
-        output_dir.join('complete', '16254', test_file).should exist
+      it 'writes files into the luminaires directory' do
+        luminaires_dir.join('16254', test_file).should exist
       end
 
-      it 'should check if there is a present CSV file' do
+      it 'writes a CSV file to the output directory' do
         output_dir.join("luminaires.csv").should exist
       end
     end
@@ -123,7 +122,6 @@ describe BatchList do
       before do
         described_class.should_receive(:enrich_luminaires).ordered
         described_class.should_receive(:download_reference_images).ordered
-        described_class.should_receive(:move_to_targetdir).ordered
         SummaryExporter.should_receive(:export_all).ordered
         CsvExporter.should_receive(:export_all).ordered
       end
@@ -133,50 +131,12 @@ describe BatchList do
     end
   end
 
-
-
-  describe '.move_to_targetdir' do
-    let(:lums) { [
-      FactoryGirl.build(:luminaire, ctn: '162548716'),
-      FactoryGirl.build(:luminaire, ctn: '163219316')
-    ] }
-    let(:files) { ['foo.XlSx', 'bar.jt'] }
-    subject{ described_class.move_to_targetdir lums, working_dir, output_dir}
-    before do
-      lums[0].stub(:is_complete?).and_return(true)
-      lums[1].stub(:is_complete?).and_return(false)
-      lums.each do |lum|
-        fam_dir = working_dir.join(lum.fam_name)
-        fam_dir.join(lum.ctn).mkpath
-        FileUtils.touch files.map {|f| fam_dir.join(f) }
-      end
-    end
-
-    it 'copies all family files for all luminaires and preserves modification time' do
-      mtimes = {}
-      lums.each do |lum|
-        files.each {|f| mtimes[[lum, f]] = working_dir.join(lum.fam_name, f).mtime }
-      end
-      subject
-      lums.each do |lum|
-        dir = output_dir.join(lum.is_complete? ? 'complete' : 'incomplete', lum.fam_name)
-        dir.should exist
-        files.each {|f| dir.join(f).mtime.should eq mtimes[[lum, f]]}
-      end
-    end
-
-    it 'handles existing complete folder' do
-      output_dir.join("complete").mkpath
-      expect { subject }.not_to raise_error
-    end
-  end
-
   describe '.download_reference_images', vcr: vcr_options do
     let(:ctn){ '162548716' }
     let(:luminaire) { FactoryGirl.build(:luminaire, ctn: ctn) }
     let(:luminaires ){ [ luminaire ] }
-    let(:download_dir){ working_dir.join(luminaire.fam_name, luminaire.ctn) }
-    subject { described_class.download_reference_images luminaires, working_dir }
+    let(:download_dir){ luminaires_dir.join(luminaire.fam_name, luminaire.ctn) }
+    subject { described_class.download_reference_images luminaires, luminaires_dir }
 
     it 'enriches all luminaires with downloaded reference images' do
       subject
@@ -200,13 +160,13 @@ describe BatchList do
       FactoryGirl.build(:luminaire, ctn: '163219316') <<
       FactoryGirl.build(:luminaire, ctn: '016520616')
     }
-    let(:expected_colorsheet) { [ working_dir.join('16254', '16254-COLORSHEET.XLS'), nil, nil] }
+    let(:expected_colorsheet) { [ luminaires_dir.join('16254', '16254-COLORSHEET.XLS'), nil, nil] }
     let(:expected_colorsheet_mtime) { [ Time.new(2011,10,14,6,42,32,'+02:00'), nil, nil] }
-    let(:expected_3dview) { [working_dir.join('16254', '16254-3DVIEW.JT'), working_dir.join('16321','16321-3DVIEW.JT'), nil] }
+    let(:expected_3dview) { [luminaires_dir.join('16254', '16254-3DVIEW.JT'), luminaires_dir.join('16321','16321-3DVIEW.JT'), nil] }
     let(:expected_3dview_mtime) { [ Time.new(2012,07,26,15,48,32,'+02:00'), Time.new(2011,06,27,14,40,14,'+02:00'), nil] }
     let(:expected_reference_images) { [
-      ['ref1.jpg', 'ref2.jpg'].map { |img| working_dir.join('16254','162548716', img) },
-      ['ref1.jpg', 'ref2.jpg'].map { |img| working_dir.join('16321','163219316', img) },
+      ['ref1.jpg', 'ref2.jpg'].map { |img| luminaires_dir.join('16254','162548716', img) },
+      ['ref1.jpg', 'ref2.jpg'].map { |img| luminaires_dir.join('16321','163219316', img) },
       nil
     ] }
     let(:expected_reference_images_mtime) { [
@@ -217,7 +177,7 @@ describe BatchList do
 
     before do
       ApsLogger.should_receive(:log).at_least(:once)
-      described_class.enrich_luminaires zip_file, lums, working_dir
+      described_class.enrich_luminaires zip_file, lums, luminaires_dir
     end
 
     it 'copies the colorsheets only if present preserving the timestamp' do

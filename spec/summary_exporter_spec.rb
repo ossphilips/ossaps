@@ -6,8 +6,6 @@ describe SummaryExporter do
   let(:output_root) { Pathname.new(RSpec.configuration.output_root) }
   let(:output_dir) { output_root.join('output') }
   let(:fixtures){ Pathname.new('spec').join('fixtures') }
-  let(:complete_dir){ output_dir.join('complete') }
-  let(:incomplete_dir){ output_dir.join('incomplete') }
   let(:luminaire) { FactoryGirl.build(:luminaire, ctn: ctn) }
 
   before do
@@ -17,19 +15,11 @@ describe SummaryExporter do
   describe '.export_all' do
     let(:ctn1){ '162548716' }
     let(:ctn2){ '162548710' }
-    let(:luminaire1) do
-      FactoryGirl.build(:luminaire, ctn: ctn1).tap do |obj|
-        obj.stub(is_complete?:false)
-      end
-    end
-    let(:luminaire2) do
-      FactoryGirl.build(:luminaire, ctn: ctn2).tap do |obj|
-        obj.stub(is_complete?:true)
-      end
-    end
+    let(:luminaire1) { FactoryGirl.build(:luminaire, ctn: ctn1) }
+    let(:luminaire2) { FactoryGirl.build(:luminaire, ctn: ctn2) }
     let(:luminaires){ [luminaire1, luminaire2] }
-    let(:target_file1){ incomplete_dir.join(luminaire1.fam_name, "#{luminaire1.fam_name}.txt") }
-    let(:target_file2){ complete_dir.join(luminaire2.fam_name, "#{luminaire2.fam_name}.txt") }
+    let(:target_file1){ output_dir.join(luminaire1.fam_name, "#{luminaire1.fam_name}.txt") }
+    let(:target_file2){ output_dir.join(luminaire2.fam_name, "#{luminaire2.fam_name}.txt") }
     subject{ described_class.export_all luminaires, output_dir }
     context 'same family' do
       it 'generates summaries' do
@@ -53,7 +43,7 @@ describe SummaryExporter do
     subject{ described_class.export luminaire, output_dir }
     let(:fixtures){ Pathname.new('spec').join('fixtures') }
     let(:source_file){ fixtures.join('luminaire_summary.txt') }
-    let(:target_dir){ incomplete_dir.join('16254') }
+    let(:target_dir){ output_dir.join('16254') }
     let(:target_file){ target_dir.join('16254.txt') }
     let(:eol) { "\r\n" }
 

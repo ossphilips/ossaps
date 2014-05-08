@@ -3,7 +3,7 @@ require_relative 'aps_logger'
 class SummaryExporter
 
   def self.export luminaire, output_dir
-    target_dir = output_dir.join(luminaire.is_complete? ? 'complete' : 'incomplete', luminaire.fam_name)
+    target_dir = output_dir.join(luminaire.fam_name)
     target_dir.mkpath
     target_file = target_dir.join("#{luminaire.fam_name}.txt")
     target_file.open('a+') do |file|
