@@ -6,6 +6,7 @@ gem "rubyXL"
 gem 'rubyzip'
 gem 'nokogiri'
 gem 'capistrano'
+gem 'rvm-capistrano'
 
 group :test do
   gem 'guard'
