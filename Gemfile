@@ -5,6 +5,7 @@ gem "roo"
 gem "rubyXL"
 gem 'rubyzip'
 gem 'nokogiri'
+gem 'capistrano'
 
 group :test do
   gem 'guard'
