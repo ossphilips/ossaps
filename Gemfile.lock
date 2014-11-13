@@ -63,6 +63,8 @@ GEM
     ruby-ole (1.2.11.6)
     rubyXL (1.2.10)
     rubyzip (0.9.9)
+    rvm-capistrano (1.5.0)
+      capistrano (>= 2.15.4)
     safe_yaml (0.9.3)
     slop (3.4.5)
     spreadsheet (0.8.5)
@@ -96,6 +98,7 @@ DEPENDENCIES
   rspec
   rubyXL
   rubyzip
+  rvm-capistrano
   terminal-notifier-guard
   vcr
   webmock
