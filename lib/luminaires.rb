@@ -39,6 +39,7 @@ class Luminaires < Array
         mapping.each do  |key,value|
           lum.public_method("#{key}=").call(normalize(row[value]))
         end
+        puts lum.designated_room
       end
     end
     self
