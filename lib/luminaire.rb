@@ -1,6 +1,17 @@
 require_relative 'aps_logger'
 
 class Luminaire
+
+  DESIGNATED_ROOMS = [
+    'BATH Bathroom',
+    'FUNC Functional',
+    'G&P Garden & Patio',
+    'HO&S Home office & Study',
+    'KIDS Kids room',
+    'KITCH Kitchen',
+    'L&B Living- & Bedroom'
+  ]
+
   attr_accessor :ctn
   attr_accessor :view3d
   attr_accessor :colorsheet
@@ -56,7 +67,8 @@ class Luminaire
       has_colorsheet? and \
       has_view3d? and \
       has_used_materials? and \
-      has_reference_images?
+      has_reference_images? and \
+      has_designated_room?
   end
 
   def main_color
@@ -69,6 +81,10 @@ class Luminaire
 
   def self.ctn2fam_name(ctn)
     (ctn and ctn.size >= 5) ? ctn[0..4] : ''
+  end
+
+  def has_designated_room?
+    DESIGNATED_ROOMS.include?(designated_room)
   end
 
 end
