@@ -10,7 +10,7 @@ class CsvExporter
     CSV.open(output_path, "w+b") do |csv|
       csv << HEADER
       luminaires.each do |luminaire|
-        csv << (to_row luminaire) unless !luminaire.is_a?(Luminaire)
+        csv << (to_row luminaire)
       end
     end
   end
