@@ -61,6 +61,10 @@ class Luminaire
     !view3d.nil?
   end
 
+  def has_designated_room?
+    DESIGNATED_ROOMS.include?(designated_room)
+  end
+
   def is_complete?
       !ctn.nil? and \
       !itemnr.nil? and \
@@ -82,9 +86,4 @@ class Luminaire
   def self.ctn2fam_name(ctn)
     (ctn and ctn.size >= 5) ? ctn[0..4] : ''
   end
-
-  def has_designated_room?
-    DESIGNATED_ROOMS.include?(designated_room)
-  end
-
 end
