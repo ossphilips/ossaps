@@ -36,7 +36,7 @@ class BatchList
     Zip::ZipFile.open(zip_file) do |zip|
       zip.each do |entry|
         name = entry.name
-        if entry.file? && name =~ /(\w+)-(\d+)?\/\2?/
+        if entry.file? && name =~ /(\d{7}\w{2}).*/
           ctn = $1
           fam = Luminaire.ctn2fam_name(ctn)
           lum = luminaires_hash[ctn]
