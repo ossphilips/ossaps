@@ -165,20 +165,9 @@ describe BatchList do
     let(:expected_3dview) { [luminaires_dir.join('16254', '16254-3DVIEW.JT'), luminaires_dir.join('16321','16321-3DVIEW.JT'), nil] }
     let(:expected_3dview_mtime) { [Time.new(2012,07,26,15,48,32,'+02:00'), Time.new(2011,06,27,14,40,14,'+02:00'), nil] }
     let(:expected_reference_images) { [
-      ['ref.jpg', 'ref.JPG', 'ref.bmp', 'ref.tif', 'ref.gif'].map { |img| luminaires_dir.join('16254','162548716', img) },
-      nil,
-      nil
-    ] }
-    let(:expected_reference_images_mtime) { [
-      [
-        Time.new(2014,5,8,14,33,49,"+02:00"),
-        Time.new(2014,5,8,14,33,49,"+02:00"),
-        Time.new(2014,5,8,14,33,41,"+02:00"),
-        Time.new(2014,2,10,10,53,00,"+01:00"),
-        Time.new(2014,5,8,14,33,49,"+02:00"),
-      ],
-      nil,
-      nil
+      ['ref.jpg', 'ref.JPG', 'ref.bmp', 'ref.tif', 'ref.gif', 'ref.pdf'].map { |img| luminaires_dir.join('16254','162548716', img) },
+      [],
+      []
     ] }
 
     before do
@@ -208,17 +197,19 @@ describe BatchList do
       end
     end
 
-   it 'copies the reference images only if present preserving the timestamp' do
+    it 'copies all reference images' do
       lums.each_with_index do |lum, i|
-        if expected_reference_images[i]
-           lum.reference_images.should_not be_empty
-           expected_reference_images[i].each_with_index do |img, j|
-             img.mtime.should eq expected_reference_images_mtime[i][j]
-           end
-        else
-           lum.reference_images.should be_empty
+        lum.reference_images.map {|img| img[:file]}.should =~ expected_reference_images[i]
+        lum.reference_images.each do |img|
+          img[:type].should eq :ref
+          img[:file].should exist
         end
       end
+    end
+
+    it 'preserves the timestamp of the reference images' do
+      jpg_img = lums[0].reference_images.select {|img|img[:file].to_s.end_with? 'jpg'}[0][:file]
+      jpg_img.mtime.should eq Time.new(2014,5,8,14,33,49,"+02:00")
     end
 
   end
