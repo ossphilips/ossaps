@@ -140,12 +140,14 @@ describe Luminaire do
     let(:view3d){ true }
     let(:has_used_materials){ true }
     let(:images){ true }
+    let(:has_designated_room) { true }
     subject{ luminaire.is_complete? }
     before do
       luminaire.stub(:has_colorsheet?).and_return(has_colorsheet)
       luminaire.stub(:has_view3d?).and_return(view3d)
       luminaire.stub(:has_used_materials?).and_return(has_used_materials)
       luminaire.stub(:has_reference_images?).and_return(images)
+      luminaire.stub(:has_designated_room?).and_return(has_designated_room)
     end
     context 'complete' do
       it{ should be_true}
@@ -166,6 +168,10 @@ describe Luminaire do
       let(:images){ false }
       it{ should be_false}
     end
+    context 'no designated room' do
+      let(:has_designated_room) { false }
+      it{ should be_false}
+    end
   end
 
   describe '#main_color' do
@@ -175,4 +181,17 @@ describe Luminaire do
     end
   end
 
+  describe '#has_designated_room?' do
+    subject{ luminaire.has_designated_room? }
+    before do
+      luminaire.designated_room = designated_room
+      stub_const("Luminaire::DESIGNATED_ROOMS",['foo'])
+    end
+    {foo: true, bar: false}.each do |value, result|
+      describe 'only returns true for known designated rooms' do
+        let(:designated_room) { value.to_s }
+        it{ should eql result }
+      end
+    end
+  end
 end

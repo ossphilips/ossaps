@@ -23,15 +23,12 @@ class Luminaires < Array
       :beam_angle                => 55,
       :radiation_pattern         => 58
     }
-    if excel_file.extname.casecmp(".xlsx") == 0
-      workbook = RubyXL::Parser.parse excel_file.to_s
-      sheet = workbook[0]
-      rows = sheet.extract_data
-    else
-      workbook = Roo::Spreadsheet.open excel_file.to_s
-      workbook.default_sheet = workbook.sheets.first
-      rows = workbook.to_a
-    end
+    rows =
+      if excel_file.extname.casecmp(".xlsx") == 0
+        rows_from_xlsx excel_file
+      else
+        rows_from_xls excel_file
+      end
     # remove header row
     rows.slice!(0)
     rows.each do |row|
@@ -61,6 +58,18 @@ class Luminaires < Array
   def normalize v
     v = v.to_i if v.is_a?(Float)
     v.to_s.strip.gsub(/\0/, '')
+  end
+
+  def rows_from_xlsx file
+    workbook = RubyXL::Parser.parse file.to_s
+    sheet = workbook[0]
+    sheet.extract_data
+  end
+
+  def rows_from_xls file
+    workbook = Roo::Spreadsheet.open file.to_s
+    workbook.default_sheet = workbook.sheets.first
+    workbook.to_a
   end
 
 end

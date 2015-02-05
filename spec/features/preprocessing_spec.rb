@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'PreProcessing script' do
-  subject { puts "rake"; rake_task }
+  subject { rake_task }
 
   let(:rake_task) { `rake aps:process #{args_string} 2>&1` }
   let(:input_dir){ Pathname.new('spec/fixtures/input_dir') }

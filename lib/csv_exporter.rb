@@ -1,7 +1,7 @@
 class CsvExporter
 
-  def self.to_row luminaire
-    [luminaire.ctn, luminaire.fam_name, luminaire.itemnr, luminaire.has_colorsheet?.to_s, luminaire.has_view3d?.to_s, luminaire.is_complete?.to_s]
+  def self.to_row lum
+    [lum.ctn, lum.fam_name, lum.itemnr, lum.has_colorsheet?.to_s, lum.has_view3d?.to_s, lum.has_designated_room?.to_s, lum.is_complete?.to_s]
   end
 
   def self.export_all luminaires, output_path
@@ -10,11 +10,11 @@ class CsvExporter
     CSV.open(output_path, "w+b") do |csv|
       csv << HEADER
       luminaires.each do |luminaire|
-        csv << (to_row luminaire) unless !luminaire.is_a?(Luminaire)
+        csv << (to_row luminaire)
       end
     end
   end
 
-  HEADER = ["CTN", "Fam name", "Item nbr", "Has Colorsheet", "Has 3DView", "Complete?"]
+  HEADER = ["CTN", "Fam name", "Item nbr", "Has Colorsheet", "Has 3DView", "Has designated room", "Complete?"]
 
 end
