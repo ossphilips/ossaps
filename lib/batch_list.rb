@@ -19,12 +19,12 @@ class BatchList
 
     @logger = ApsLogger.new output_dir.join("error_log.txt")
 
-    excel_files = Pathname.glob(input_dir.join( "*.{xls,XLS,xlsx,XLSX}"))
+    excel_files = Pathname.glob(input_dir + "*.{xls,xlsx}", File::FNM_CASEFOLD)
     ApsLogger.log :fatal, "Found more then one Excel file in directory #{input_dir}" if excel_files.size > 1
     @excel_file = excel_files.first
     ApsLogger.log :fatal, "Excel file missing in directory #{input_dir}" unless @excel_file
 
-    zip_files = Pathname.glob(input_dir.join("*.{zip,ZIP}"))
+    zip_files = Pathname.glob(input_dir + "*.{zip}", File::FNM_CASEFOLD)
     ApsLogger.log :fatal, "Found more then one Zipfile in directory #{input_dir}" if zip_files.size > 1
     @zip_file = zip_files.first
     ApsLogger.log :fatal, "Zipfile missing in directory #{input_dir}" unless @zip_file
