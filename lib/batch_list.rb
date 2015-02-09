@@ -43,6 +43,7 @@ class BatchList
     luminaires_hash = luminaires.ctn_hash
     colorsheets = {}
     view3ds = {}
+    images = {}
     Zip::ZipFile.open(zip_file) do |zip|
       zip.each do |entry|
         name = entry.name
@@ -58,18 +59,15 @@ class BatchList
             colorsheets[fam].import(file)
             ApsLogger.log :info, "Colorsheet added for family #{fam}"
           elsif View3D.is_a_view3d?(name)
-            if !view3ds[fam]
-              file = output_dir + View3D.filename(fam, path.extname())
-              extract(entry, file)
-              view3ds[fam] = file.extend View3D
-              ApsLogger.log :info, "View3D added for family #{fam}"
-            end
+            file = output_dir + View3D.filename(fam, path.extname())
+            extract(entry, file)
+            view3ds[fam] = file.extend View3D
+            ApsLogger.log :info, "View3D added for family #{fam}"
           elsif self.is_a_photo(name)
             file = output_dir + fam + ctn  + path.basename
             extract(entry, file)
-            if lum
-              lum.reference_images.push type: :ref, file: file
-            end
+            images[ctn] ||= []
+            images[ctn].push type: :ref, file: file
             ApsLogger.log :info, "Reference image added for #{ctn}"
           end
         end
@@ -79,6 +77,7 @@ class BatchList
     luminaires.each do |lum|
       lum.colorsheet = colorsheets[lum.fam_name]
       lum.view3d = view3ds[lum.fam_name]
+      lum.reference_images = images[lum.ctn] || []
     end
   end
 

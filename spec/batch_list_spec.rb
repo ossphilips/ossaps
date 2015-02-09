@@ -228,12 +228,11 @@ describe BatchList do
     end
   end
 
-  describe '.path2ctn' do
-    fit 'returns true only for supported image types' do
+  describe '.is_a_photo' do
+    it 'returns true only for supported image types' do
       %W(Jpg tiF BMP gif pdf).each do |ext|
         expect(BatchList.is_a_photo('foo/a.' + ext)).to be_true
       end
     end
-
   end
 end

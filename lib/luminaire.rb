@@ -31,7 +31,7 @@ class Luminaire
   attr_accessor :radiation_pattern
   attr_accessor :designated_room
   attr_accessor :commercial_name
-  attr_reader :reference_images
+  attr_accessor :reference_images
 
   def initialize
     # invariant: reference_images!=nil
