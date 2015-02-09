@@ -215,15 +215,15 @@ describe BatchList do
   end
 
   describe '.path2ctn' do
-    fit 'retrieves the ctn from the path' do
+    it 'retrieves the ctn from the path' do
       expect(BatchList.path2ctn('DOCUMENTS/162548716-915004122901/915004122901-DEVELOPMNT-3DVIEW.088505.JT')).to eql('162548716')
     end
 
-    fit 'retrieves the ctn from the path also when no gtin in the path' do
+    it 'retrieves the ctn from the path also when no gtin in the path' do
       expect(BatchList.path2ctn('DOCUMENTS/163219316withoutgtinpostfix/915002532202-DEVELOPMNT-3DVIEW.078658.JT')).to eql('163219316')
     end
 
-    fit 'retrieves the ctn from the path also when ctn contains alphanumeric main color' do
+    it 'retrieves the ctn from the path also when ctn contains alphanumeric main color' do
       expect(BatchList.path2ctn('DOCUMENTS/16254IN16-915004122901/915004122901-DEVELOPMNT-3DVIEW.088505.JT')).to eql('16254IN16')
     end
   end
