@@ -30,6 +30,11 @@ class BatchList
     ApsLogger.log :fatal, "Zipfile missing in directory #{input_dir}" unless @zip_file
   end
 
+  def self.path2ctn path
+    /(?<ctn>\d{5}\w{4}).*/ =~ path
+    ctn
+  end
+
   def self.enrich_luminaires zip_file, luminaires, output_dir
     luminaires_hash = luminaires.ctn_hash
     colorsheets = {}
@@ -37,8 +42,7 @@ class BatchList
     Zip::ZipFile.open(zip_file) do |zip|
       zip.each do |entry|
         name = entry.name
-        if entry.file? && name =~ /(\d{7}\w{2}).*/
-          ctn = $1
+        if entry.file? && ctn = path2ctn(name)
           fam = Luminaire.ctn2fam_name(ctn)
           lum = luminaires_hash[ctn]
           ApsLogger.log :warn, "No entry in master Excel file for #{name} (ctn #{ctn})"  unless lum
