@@ -35,8 +35,11 @@ class BatchList
     ctn
   end
 
+
+  # Could refactor this now as done in View#D
+  # However, heading towards a factory class for handly different file types
   def self.is_a_photo path
-    (/.(jpg|tif|bmp|gif|pdf)\z/i =~ path) != nil
+    (/.(jpg|tif|bmp|gif|pdf|png|ai)\z/i =~ path) != nil
   end
 
   def self.enrich_luminaires zip_file, luminaires, output_dir
