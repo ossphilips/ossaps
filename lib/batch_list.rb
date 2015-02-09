@@ -35,6 +35,10 @@ class BatchList
     ctn
   end
 
+  def self.is_a_photo path
+    (/.(jpg|tif|bmp|gif|pdf)\z/i =~ path) != nil
+  end
+
   def self.enrich_luminaires zip_file, luminaires, output_dir
     luminaires_hash = luminaires.ctn_hash
     colorsheets = {}
@@ -60,7 +64,7 @@ class BatchList
               view3ds[fam] = file.extend View3D
               ApsLogger.log :info, "View3D added for family #{fam}"
             end
-          elsif name[/(.jpg|.tif|.bmp|.gif|.pdf)\z/i]
+          elsif self.is_a_photo(name)
             file = output_dir + fam + ctn  + path.basename
             extract(entry, file)
             if lum

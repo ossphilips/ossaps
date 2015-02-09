@@ -227,4 +227,13 @@ describe BatchList do
       expect(BatchList.path2ctn('DOCUMENTS/16254IN16-915004122901/915004122901-DEVELOPMNT-3DVIEW.088505.JT')).to eql('16254IN16')
     end
   end
+
+  describe '.path2ctn' do
+    fit 'returns true only for supported image types' do
+      %W(Jpg tiF BMP gif pdf).each do |ext|
+        expect(BatchList.is_a_photo('foo/a.' + ext)).to be_true
+      end
+    end
+
+  end
 end
