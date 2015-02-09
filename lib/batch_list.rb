@@ -1,5 +1,6 @@
 require 'zip/zip'
 require 'fileutils'
+require 'pathname'
 require_relative 'luminaire'
 require_relative 'luminaires'
 require_relative 'color_sheet'
