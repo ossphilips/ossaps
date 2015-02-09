@@ -41,7 +41,7 @@ class BatchList
           ctn = $1
           fam = Luminaire.ctn2fam_name(ctn)
           lum = luminaires_hash[ctn]
-          ApsLogger.log :warn, "No entry in Excel file for #{name} (ctn #{ctn})"  unless lum
+          ApsLogger.log :warn, "No entry in master Excel file for #{name} (ctn #{ctn})"  unless lum
           path = Pathname.new(name)
           if ColorSheet.is_a_colorsheet?(name)
             file = output_dir + ColorSheet.filename(fam, path.extname())
