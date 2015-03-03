@@ -3,32 +3,61 @@ require 'rubyXL'
 
 class Luminaires < Array
 
+  MAPPING1 = {
+    :itemnr                    => 0,
+    :ctn                       => 1,
+    :description               => 3,
+    :part_description          => 9,
+    :commercial_name           => 13,
+    :designated_room           => 19,
+    :main_color_description    => 27,
+    :main_material             => 28,
+    :main_material_description => 29,
+    :nr_of_lightsources        => 33,
+    :bulb_description          => 41,
+    :color_temperature         => 50,
+    :nominal_lumen             => 52,
+    :rated_lumen               => 53,
+    :luminous_flux             => 54,
+    :beam_angle                => 55,
+    :radiation_pattern         => 58
+  }
+
+  MAPPING2 = {
+    :itemnr                    => 3,
+    :ctn                       => 1,
+    :description               => 4,
+    :part_description          => -1,
+    :commercial_name           => 20,
+    :designated_room           => 12,
+    :main_color_description    => 23,
+    :main_material             => 24,
+    :main_material_description => 25,
+    :nr_of_lightsources        => 56,
+    :bulb_description          => 49,
+    :color_temperature         => 59,
+    :nominal_lumen             => 57,
+    :rated_lumen               => 58,
+    :luminous_flux             => -1,
+    :beam_angle                => 61,
+    :radiation_pattern         => -1
+  }
+
   def import_from_excel excel_file
-    mapping = {
-      :itemnr                    => 0,
-      :ctn                       => 1,
-      :description               => 3,
-      :part_description          => 9,
-      :commercial_name           => 13,
-      :designated_room           => 19,
-      :main_color_description    => 27,
-      :main_material             => 28,
-      :main_material_description => 29,
-      :nr_of_lightsources        => 33,
-      :bulb_description          => 41,
-      :color_temperature         => 50,
-      :nominal_lumen             => 52,
-      :rated_lumen               => 53,
-      :luminous_flux             => 54,
-      :beam_angle                => 55,
-      :radiation_pattern         => 58
-    }
     rows =
       if excel_file.extname.casecmp(".xlsx") == 0
         rows_from_xlsx excel_file
       else
         rows_from_xls excel_file
       end
+
+    mapping =
+      if normalize(rows[0][4]) == "Item Description" then
+        MAPPING2
+      else
+        MAPPING1
+      end
+
     # remove header row
     rows.slice!(0)
     rows.each do |row|
