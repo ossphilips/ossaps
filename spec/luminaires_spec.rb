@@ -26,11 +26,20 @@ describe Luminaires do
         keys = ['itemnr', 'description', 'commercial_name', 'designated_room',
                 'main_color_description', 'main_material', 'main_material_description',
                 'nr_of_lightsources', 'bulb_description', 'color_temperature',
-                'nominal_lumen', 'rated_lumen', 'luminous_flux', 'beam_angle',
-                'radiation_pattern'
+                'nominal_lumen', 'rated_lumen', 'beam_angle'
         ]
         keys.each do |key|
-          lum.public_method("#{key}").call().should eql key
+          expected_value = key
+          lum.public_method("#{key}").call().should eql expected_value
+        end
+      end
+      it 'parses all optional fields depending on the format' do
+        lum = subject[0]
+
+        keys = ['luminous_flux', 'radiation_pattern', 'part_description']
+        keys.each do |key|
+          expected_value = if format == 1 then key else '' end
+          lum.public_method("#{key}").call().should eql expected_value
         end
       end
       it 'strips a all whitespace and null-bytes from the CTN' do
@@ -42,13 +51,24 @@ describe Luminaires do
 
     context 'xls file' do
        it_behaves_like "luminaire importer" do
-         let(:filename) { 'luminaires.xls' }
+         let(:filename) { 'luminaires_format1.xls' }
+         let(:format) { 1 }
+       end
+
+       it_behaves_like "luminaire importer" do
+         let(:filename) { 'luminaires_format2.xls' }
+         let(:format) { 2 }
        end
     end
 
     context 'xlsx file' do
        it_behaves_like "luminaire importer" do
-         let(:filename) { 'luminaires.xlsx' }
+         let(:filename) { 'luminaires_format1.xlsx' }
+         let(:format) { 1 }
+       end
+       it_behaves_like "luminaire importer" do
+         let(:filename) { 'luminaires_format2.xlsx' }
+         let(:format) { 2 }
        end
     end
   end
